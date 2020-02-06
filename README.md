@@ -3,6 +3,7 @@
 ## Description
 
 Built a web application using Dash to visualise the number of ancient Greek colonies per its modern-day location. I have also included a table to display the name of each colony for a selected location.
+
 The dataset came from: https://en.wikipedia.org/wiki/Greek_colonisation
 
 ## Demo
