@@ -8,6 +8,8 @@ The dataset came from: https://en.wikipedia.org/wiki/Greek_colonisation
 
 ## Demo
 
+Watch longer demo on Youtube: https://youtu.be/shfUQK9v7Aw
+
 ![](Dash-Greek-Colonisation-20200204.gif)
 
 ## Process
