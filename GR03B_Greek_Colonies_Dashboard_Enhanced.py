@@ -5,20 +5,26 @@ import plotly.graph_objects as go
 import plotly.express as px
 from GR03A_DataFrame import create_df_for_viz, txt_to_dataframe
 
+# Color palette constants
+COLORS = {
+    '90+ colonies': '#FF6B6B',          # Coral red
+    '60 - 90 colonies': '#4ECDC4',      # Turquoise
+    '30 - 60 colonies': '#FFE66D',      # Golden yellow
+    '10 - 20 colonies': '#95E1D3',      # Mint green
+    'Less than 10 colonies': '#A8E6CF'  # Light mint
+}
+
+# UI constants
+STATS_CARD_WIDTH = '20%'
+TOP_COUNTRY_CARD_WIDTH = '38%'
+MAP_COLUMN_WIDTH = '65%'
+CHARTS_COLUMN_WIDTH = '33%'
+
 def create_enhanced_app():
     # Load dataframes
     df = create_df_for_viz()
     cities_df = txt_to_dataframe()
     cities_only_df = cities_df[['Country Name', 'City Name']].copy()
-    
-    # Enhanced color palette - more vibrant and modern
-    colors = {
-        '90+ colonies': '#FF6B6B',      # Coral red
-        '60 - 90 colonies': '#4ECDC4',   # Turquoise
-        '30 - 60 colonies': '#FFE66D',   # Golden yellow
-        '10 - 20 colonies': '#95E1D3',   # Mint green
-        'Less than 10 colonies': '#A8E6CF'  # Light mint
-    }
     
     # Create enhanced bubble map
     def generate_enhanced_bubble_map(selected_country=None):
@@ -50,7 +56,7 @@ def create_enhanced_app():
                 mode='markers',
                 marker=dict(
                     size=sizes if selected_country else df_cat['No of Cities'] * 22,
-                    color=colors[category],
+                    color=COLORS[category],
                     line=dict(
                         color='white',
                         width=2
@@ -163,7 +169,7 @@ def create_enhanced_app():
                 labels=category_counts['Category'],
                 values=category_counts['Count'],
                 marker=dict(
-                    colors=[colors[cat] for cat in category_counts['Category']],
+                    colors=[COLORS[cat] for cat in category_counts['Category']],
                     line=dict(color='white', width=2)
                 ),
                 textinfo='label+percent',
@@ -258,7 +264,7 @@ def create_enhanced_app():
                     'boxShadow': '0 2px 10px rgba(0,0,0,0.1)',
                     'textAlign': 'center'
                 })
-            ], style={'width': '20%', 'display': 'inline-block', 'padding': '10px'}),
+            ], style={'width': STATS_CARD_WIDTH, 'display': 'inline-block', 'padding': '10px'}),
             
             # Card 3: Average
             html.Div([
@@ -272,7 +278,7 @@ def create_enhanced_app():
                     'boxShadow': '0 2px 10px rgba(0,0,0,0.1)',
                     'textAlign': 'center'
                 })
-            ], style={'width': '20%', 'display': 'inline-block', 'padding': '10px'}),
+            ], style={'width': STATS_CARD_WIDTH, 'display': 'inline-block', 'padding': '10px'}),
             
             # Card 4: Top Country
             html.Div([
@@ -287,7 +293,7 @@ def create_enhanced_app():
                     'boxShadow': '0 2px 10px rgba(0,0,0,0.1)',
                     'textAlign': 'center'
                 })
-            ], style={'width': '38%', 'display': 'inline-block', 'padding': '10px'}),
+            ], style={'width': TOP_COUNTRY_CARD_WIDTH, 'display': 'inline-block', 'padding': '10px'}),
         ], style={
             'backgroundColor': '#ECF0F1',
             'padding': '10px 20px',
@@ -356,7 +362,7 @@ def create_enhanced_app():
                     figure=generate_enhanced_bubble_map(),
                     style={'borderRadius': '10px', 'overflow': 'hidden'}
                 )
-            ], style={'width': '65%', 'display': 'inline-block', 'verticalAlign': 'top', 'padding': '20px'}),
+            ], style={'width': MAP_COLUMN_WIDTH, 'display': 'inline-block', 'verticalAlign': 'top', 'padding': '20px'}),
             
             # Right Column - Charts and Table
             html.Div([
@@ -469,7 +475,7 @@ def create_enhanced_app():
                     'boxShadow': '0 2px 10px rgba(0,0,0,0.1)',
                     'padding': '20px'
                 })
-            ], style={'width': '33%', 'display': 'inline-block', 'verticalAlign': 'top', 'padding': '20px'})
+            ], style={'width': CHARTS_COLUMN_WIDTH, 'display': 'inline-block', 'verticalAlign': 'top', 'padding': '20px'})
         ], style={'backgroundColor': '#ECF0F1'}),
         
         # Footer
