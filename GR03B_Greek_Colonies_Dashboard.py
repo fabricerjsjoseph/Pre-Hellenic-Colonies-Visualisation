@@ -1,12 +1,10 @@
 import dash
-from dash.dependencies import Input, Output
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc, html, Input, Output
 import pandas as pd
 import webbrowser
 import plotly.graph_objects as go
 from GR03A_DataFrame import create_df_for_viz,txt_to_dataframe
-import dash_table
+from dash import dash_table
 
 def create_app():
 
@@ -136,4 +134,4 @@ webbrowser.register('chrome', None,webbrowser.BackgroundBrowser(chrome_path))
 # Run server
 if __name__ == '__main__':
         webbrowser.get('chrome').open_new('http://127.0.0.1:8050/')
-        app.run_server(debug=False)
+        app.run(debug=False)
