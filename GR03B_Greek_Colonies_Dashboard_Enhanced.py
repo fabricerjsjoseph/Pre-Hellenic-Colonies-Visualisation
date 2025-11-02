@@ -26,52 +26,51 @@ def create_enhanced_app():
     cities_df = txt_to_dataframe()
     cities_only_df = cities_df[['Country Name', 'City Name']].copy()
     
-    # Create enhanced bubble map
+    # Create enhanced bubble map using Plotly Express for better built-in geography
     def generate_enhanced_bubble_map(selected_country=None):
-        fig = go.Figure()
+        # Prepare data for visualization
+        plot_df = df.copy()
         
-        # Add traces for each category
-        for category in df['Category'].unique():
-            df_cat = df[df.Category == category]
-            
-            # Highlight selected country
+        # Add size and opacity columns based on selection
+        if selected_country:
+            plot_df['marker_size'] = plot_df.apply(
+                lambda row: row['No of Cities'] * 25 if row['Country'] == selected_country else row['No of Cities'] * 20,
+                axis=1
+            )
+            plot_df['marker_opacity'] = plot_df.apply(
+                lambda row: 1.0 if row['Country'] == selected_country else 0.4,
+                axis=1
+            )
+        else:
+            plot_df['marker_size'] = plot_df['No of Cities'] * 22
+            plot_df['marker_opacity'] = 0.85
+        
+        # Create figure using Plotly Express
+        fig = px.scatter_geo(
+            plot_df,
+            lon='Longitude',
+            lat='Latitude',
+            color='Category',
+            size='marker_size',
+            hover_name='Country',
+            hover_data={'No of Cities': True, 'Longitude': False, 'Latitude': False, 
+                       'marker_size': False, 'marker_opacity': False, 'Category': False},
+            color_discrete_map=COLORS,
+            size_max=50
+        )
+        
+        # Update traces for better styling
+        for trace in fig.data:
+            trace.marker.line = dict(color='white', width=2)
             if selected_country:
-                sizes = []
-                opacities = []
-                for country in df_cat['Country']:
-                    if country == selected_country:
-                        sizes.append(df_cat[df_cat['Country'] == country]['No of Cities'].values[0] * 25)
-                        opacities.append(1.0)
-                    else:
-                        sizes.append(df_cat[df_cat['Country'] == country]['No of Cities'].values[0] * 20)
-                        opacities.append(0.4)
+                # Apply opacity from dataframe
+                category = trace.name
+                cat_data = plot_df[plot_df['Category'] == category]
+                trace.marker.opacity = cat_data['marker_opacity'].tolist()
             else:
-                sizes = df_cat['No of Cities'] * 22
-                opacities = [0.8] * len(df_cat)
-            
-            fig.add_trace(go.Scattergeo(
-                lon=df_cat.Longitude,
-                lat=df_cat.Latitude,
-                text=df_cat.Trace_Text,
-                mode='markers',
-                marker=dict(
-                    size=sizes if selected_country else df_cat['No of Cities'] * 22,
-                    color=COLORS[category],
-                    line=dict(
-                        color='white',
-                        width=2
-                    ),
-                    sizemode='area',
-                    opacity=opacities if selected_country else 0.8
-                ),
-                name=category,
-                customdata=df_cat[['Country', 'No of Cities']],
-                hovertemplate='<b>%{customdata[0]}</b><br>' +
-                              'Colonies: %{customdata[1]}<br>' +
-                              '<extra></extra>'
-            ))
+                trace.marker.opacity = 0.85
         
-        # Enhanced layout with better styling
+        # Enhanced layout with beautiful styling
         fig.update_layout(
             title={
                 'text': '<b>Ancient Greek Colonies Distribution</b><br>' +
@@ -86,32 +85,38 @@ def create_enhanced_app():
             legend=dict(
                 orientation='h',
                 yanchor='bottom',
-                y=-0.15,
+                y=-0.05,
                 xanchor='center',
                 x=0.5,
-                font=dict(size=12),
-                bgcolor='rgba(255,255,255,0.9)',
-                bordercolor='#E0E0E0',
-                borderwidth=2
+                font=dict(size=12, color='#2C3E50'),
+                bgcolor='rgba(255,255,255,0.95)',
+                bordercolor='#BDC3C7',
+                borderwidth=2,
+                title=None
             ),
-            margin=dict(l=0, r=0, t=80, b=100),
+            margin=dict(l=0, r=0, t=80, b=50),
             geo=dict(
-                center=dict(lon=20.2, lat=41.2),
-                projection=dict(scale=7),
-                showcoastlines=True,
-                coastlinecolor='#95A5A6',
-                coastlinewidth=1.5,
-                showcountries=True,
-                countrycolor='#BDC3C7',
-                countrywidth=1,
-                showframe=False,
-                landcolor='#34495E',
+                projection_type='natural earth',
+                showland=True,
+                landcolor='#ECF0F1',
+                showocean=True,
+                oceancolor='#85C1E9',
                 showlakes=True,
-                lakecolor='#2980B9',
+                lakecolor='#AED6F1',
                 showrivers=True,
-                rivercolor='#3498DB',
-                showsubunits=True,
-                bgcolor='#1A252F'
+                rivercolor='#5DADE2',
+                showcountries=True,
+                countrycolor='#7F8C8D',
+                countrywidth=1.2,
+                showcoastlines=True,
+                coastlinecolor='#34495E',
+                coastlinewidth=1.5,
+                showframe=True,
+                framecolor='#BDC3C7',
+                framewidth=2,
+                bgcolor='#D6EAF8',
+                center=dict(lon=20, lat=40),
+                projection_scale=3.5
             ),
             paper_bgcolor='#ECF0F1',
             plot_bgcolor='#ECF0F1'

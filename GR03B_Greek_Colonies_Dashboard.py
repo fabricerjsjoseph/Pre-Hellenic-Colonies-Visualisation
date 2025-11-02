@@ -15,24 +15,33 @@ def create_app():
     # list of colours to assign to each trace
     colors = ["royalblue","crimson","lightseagreen","orange","limegreen"]
 
-    # Function to generate bubble map figure
+    # Function to generate bubble map figure using Plotly Express
     def generate_bubble_map():
-        figure = go.Figure()
-
-        for index,value in enumerate(category):
-            df_cat = df[df.Category == value ]
-            figure.add_trace(go.Scattergeo(
-                lon = df_cat.Longitude,
-                lat = df_cat.Latitude,
-                text = df_cat.Trace_Text,
-                marker = dict(
-                    size = df_cat['No of Cities']*20,
-                    color = colors[index],
-                    line_color='rgb(40,40,40)',
-                    line_width=0.5,
-                    sizemode = 'area'
-                ),
-                name = value))
+        # Prepare data with marker size
+        plot_df = df.copy()
+        plot_df['marker_size'] = plot_df['No of Cities'] * 20
+        
+        # Create color mapping
+        color_map = dict(zip(category, colors))
+        
+        # Create figure using Plotly Express for better built-in geography
+        figure = px.scatter_geo(
+            plot_df,
+            lon='Longitude',
+            lat='Latitude',
+            color='Category',
+            size='marker_size',
+            hover_name='Country',
+            hover_data={'No of Cities': True, 'Longitude': False, 'Latitude': False,
+                       'marker_size': False, 'Category': False},
+            color_discrete_map=color_map,
+            size_max=50
+        )
+        
+        # Update traces for styling
+        for trace in figure.data:
+            trace.marker.line = dict(color='rgb(40,40,40)', width=0.5)
+            trace.marker.opacity = 0.8
 
         figure.update_layout(
             title_text = '<b>Number of Colonies by Location</b> <br>Before Philip II of Macedon (Pre-Hellenic)',
@@ -41,26 +50,31 @@ def create_app():
             width=1050,
             height=1050,
             legend=dict(
-                orientation='h'
+                orientation='h',
+                title=None
             ),
             margin=go.layout.Margin(
-                b=500
+                b=100
             ),
             geo = dict(
-                center=dict(
-                    lon=20.2,
-                    lat=41.2
-                ),
-                projection=dict(
-                    scale=7
-                ),
-                showcoastlines=True,
+                projection_type='natural earth',
+                showland=True,
+                landcolor='rgb(0, 0, 0)',
+                showocean=True,
+                oceancolor='rgb(50, 50, 100)',
                 showcountries=True,
+                countrycolor='rgb(100, 100, 100)',
+                countrywidth=1,
+                showcoastlines=True,
+                coastlinecolor='rgb(150, 150, 150)',
+                coastlinewidth=1,
                 showframe=False,
-                landcolor = 'rgb(0, 0 , 0)',
                 showrivers=True,
-                rivercolor='rgb(255, 255 , 255)',
-                showsubunits=True
+                rivercolor='rgb(255, 255, 255)',
+                riverwidth=0.5,
+                center=dict(lon=20, lat=40),
+                projection_scale=3.5,
+                bgcolor='rgb(20, 20, 40)'
             )
         )
 
