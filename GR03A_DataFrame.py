@@ -15,7 +15,7 @@ def txt_to_dataframe():
 
     #Create new list - each item being city code and name
     import re
-    city_list = [re.findall('[A-Z]+[0-9]+\.\s[A-Za-z]+/?[A-Za-z]*?\s?[A-Za-z]*?',city) for city in raw_df_list]
+    city_list = [re.findall(r'[A-Z]+[0-9]+\.\s[A-Za-z]+/?[A-Za-z]*?\s?[A-Za-z]*?',city) for city in raw_df_list]
 
     #Creating a flatlist out of city_list
     import itertools
