@@ -546,11 +546,23 @@ def create_professional_app():
         if triggered_id == 'reset-button':
             selected_country = 'ALL'
         elif triggered_id == 'bubble-map' and map_click:
-            # Map click - extract country from click data
-            selected_country = map_click['points'][0]['customdata'][0]
+            # Map click - extract country from click data with bounds checking
+            if map_click and 'points' in map_click and len(map_click['points']) > 0:
+                if 'customdata' in map_click['points'][0] and len(map_click['points'][0]['customdata']) > 0:
+                    selected_country = map_click['points'][0]['customdata'][0]
+                else:
+                    selected_country = current_dropdown if current_dropdown else 'ALL'
+            else:
+                selected_country = current_dropdown if current_dropdown else 'ALL'
         elif triggered_id == 'bar-chart' and bar_click:
-            # Bar chart click - extract country
-            selected_country = bar_click['points'][0]['customdata']
+            # Bar chart click - extract country with bounds checking
+            if bar_click and 'points' in bar_click and len(bar_click['points']) > 0:
+                if 'customdata' in bar_click['points'][0]:
+                    selected_country = bar_click['points'][0]['customdata']
+                else:
+                    selected_country = current_dropdown if current_dropdown else 'ALL'
+            else:
+                selected_country = current_dropdown if current_dropdown else 'ALL'
         elif triggered_id == 'country-selector':
             selected_country = dropdown_value
         else:
