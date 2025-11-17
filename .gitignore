@@ -21,3 +21,11 @@ Thumbs.db
 
 # Dash/Flask
 *.log
+
+# Environment variables
+.env
+.env.local
+
+# Chainlit
+.chainlit/
+.files/
