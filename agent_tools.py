@@ -47,8 +47,11 @@ def get_country_details(df: pd.DataFrame, cities_df: pd.DataFrame, country: str)
     
     country_row = country_data.iloc[0]
     
-    # Get list of cities
-    cities = cities_df[cities_df["Country Name"] == country]["City Name"].tolist()
+    # Get list of cities - handle both column name formats
+    country_col = "Country" if "Country" in cities_df.columns else "Country Name"
+    city_col = "City" if "City" in cities_df.columns else "City Name"
+    
+    cities = cities_df[cities_df[country_col] == country][city_col].tolist()
     
     details = {
         "country": country,
@@ -65,9 +68,16 @@ def get_country_details(df: pd.DataFrame, cities_df: pd.DataFrame, country: str)
 
 def search_colonies(cities_df: pd.DataFrame, query: str) -> List[Dict[str, str]]:
     """Search for colonies by name."""
+    # Handle both column name formats
+    country_col = "Country" if "Country" in cities_df.columns else "Country Name"
+    city_col = "City" if "City" in cities_df.columns else "City Name"
+    
     # Case-insensitive search
-    mask = cities_df["City Name"].str.contains(query, case=False, na=False)
-    results = cities_df[mask][["Country Name", "City Name"]].head(20)
+    mask = cities_df[city_col].str.contains(query, case=False, na=False)
+    results = cities_df[mask][[country_col, city_col]].head(20)
+    
+    # Rename columns to standard format for output
+    results = results.rename(columns={country_col: "Country", city_col: "City"})
     
     return results.to_dict("records")
 
