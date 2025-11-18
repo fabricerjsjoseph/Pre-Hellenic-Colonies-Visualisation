@@ -4,11 +4,33 @@
 
 An enhanced, interactive web application built with Dash to visualize ancient Greek colonies across the Mediterranean during the Pre-Hellenic period (before Philip II of Macedon). This application provides rich, interactive features for exploring historical settlement patterns with modern data visualization techniques.
 
+**🆕 NEW: AI-Powered Chat Agent!** - Explore the data through natural language conversations. See [README_CHAT_AGENT.md](README_CHAT_AGENT.md) for details.
+
 The dataset came from: https://en.wikipedia.org/wiki/Greek_colonisation
 
-## ✨ Features
+## 🚀 Available Interfaces
 
-### Professional Dashboard (GR03B_Greek_Colonies_Dashboard_Professional.py) ⭐ **NEW**
+### 1. AI Chat Agent (app.py) 🤖 ⭐ **NEW**
+An agentic chat interface powered by OpenRouter LLMs:
+- **Natural Language Queries**: Ask questions in plain English
+- **Interactive Visualizations**: Request maps and charts on demand
+- **Multiple LLM Options**: Claude, GPT-4, Llama, Gemini, and more
+- **Historical Expertise**: Deep knowledge of Greek colonization
+- **Context-Aware**: Maintains conversation history
+
+**Quick Start:**
+```bash
+# Set up your OpenRouter API key
+cp .env.example .env
+# Edit .env with your API key
+
+# Run the chat agent
+chainlit run app.py
+```
+
+See [README_CHAT_AGENT.md](README_CHAT_AGENT.md) for full documentation.
+
+### 2. Professional Dashboard (GR03B_Greek_Colonies_Dashboard_Professional.py)
 
 **Modern Design & Theme:**
 - 🎨 **Bootstrap LUX Theme** - Professional, elegant design with dash-bootstrap-components
@@ -97,35 +119,62 @@ Watch longer demo on Youtube: https://youtu.be/shfUQK9v7Aw
 pip install -r requirements.txt
 ```
 
-### Running the Application
+### Running the Applications
 
-**Professional Version (Recommended):**
+**AI Chat Agent (NEW - Recommended for exploration):**
+```bash
+# First, set up your OpenRouter API key
+cp .env.example .env
+# Edit .env and add your OpenRouter API key
+
+# Run the chat agent
+chainlit run app.py
+# Opens at: http://localhost:8000
+```
+
+**Professional Dashboard:**
 ```bash
 python GR03B_Greek_Colonies_Dashboard_Professional.py
+# Opens at: http://127.0.0.1:8050/
 ```
 
 **Enhanced Version:**
 ```bash
 python GR03B_Greek_Colonies_Dashboard_Enhanced.py
+# Opens at: http://127.0.0.1:8050/
 ```
 
 **Original Version:**
 ```bash
 python GR03B_Greek_Colonies_Dashboard.py
+# Opens at: http://127.0.0.1:8050/
 ```
-
-Then open your browser to: http://127.0.0.1:8050/
 
 ## 📁 Project Structure
 
-- **GR03A_DataFrame.py** - Data processing and wrangling module
-- **GR03B_Greek_Colonies_Dashboard.py** - Original dashboard (updated for modern Dash)
+### Chat Agent (NEW)
+- **app.py** - Main Chainlit chat application ⭐ **NEW**
+- **config.py** - Configuration for LLMs and agent settings ⭐ **NEW**
+- **agent_tools.py** - Data analysis and visualization utilities ⭐ **NEW**
+- **.env.example** - Environment variable template ⭐ **NEW**
+- **README_CHAT_AGENT.md** - Detailed chat agent documentation ⭐ **NEW**
+
+### Dash Dashboards
+- **GR03B_Greek_Colonies_Dashboard_Professional.py** - Professional dashboard with Bootstrap theme
 - **GR03B_Greek_Colonies_Dashboard_Enhanced.py** - Enhanced dashboard with advanced features
-- **GR03B_Greek_Colonies_Dashboard_Professional.py** - Professional dashboard with Bootstrap theme and comprehensive cross-filtering ⭐ **NEW**
+- **GR03B_Greek_Colonies_Dashboard.py** - Original dashboard
+
+### Data Processing
+- **GR03A_DataFrame.py** - Data processing and wrangling module
+
+### Data Files
 - **GR03-Ancient Greek Cities Before Hellenistic Period 20200131.txt** - Source data
 - **GR03-Country Code Mapping.csv** - Country code to name mapping
 - **GR03-Selected Capital Geo Coordinates Modified.csv** - Geographical coordinates
+
+### Configuration
 - **requirements.txt** - Python dependencies
+- **README.md** - This file
 
 ## 🛠️ Technical Details
 
@@ -141,13 +190,35 @@ Then open your browser to: http://127.0.0.1:8050/
 
 ### Technologies Used
 
+**Chat Agent:**
+- **Chainlit** - AI chat application framework ⭐ **NEW**
+- **OpenRouter** - Multi-model LLM API gateway ⭐ **NEW**
+- **OpenAI SDK** - Client library for API calls ⭐ **NEW**
+- **Plotly** - Interactive visualizations in chat
+- **Pandas** - Data manipulation and analysis
+- **Python 3.9+** - Core programming language
+
+**Dash Dashboards:**
 - **Dash** - Web application framework
-- **Dash Bootstrap Components** - Bootstrap theme integration ⭐ **NEW**
+- **Dash Bootstrap Components** - Bootstrap theme integration
 - **Plotly** - Interactive graphing library
 - **Pandas** - Data manipulation and analysis
 - **Python 3.12+** - Core programming language
 
-### Key Improvements in Professional Version ⭐ **NEW**
+### Chat Agent Capabilities ⭐ **NEW**
+
+- ✅ Natural language query processing
+- ✅ Context-aware conversation with memory
+- ✅ Multiple LLM model options (Claude, GPT-4, Llama, Gemini)
+- ✅ On-demand visualization generation
+- ✅ Historical data analysis and insights
+- ✅ Country/region comparisons
+- ✅ Statistical summaries
+- ✅ Interactive maps, charts, and tables
+- ✅ Streaming responses for better UX
+- ✅ Model switching via settings
+
+### Key Improvements in Professional Version
 
 - ✅ Bootstrap LUX theme integration
 - ✅ FontAwesome icons on KPI cards
