@@ -4,23 +4,17 @@ This is the main Chainlit application file that implements an agentic chat inter
 for exploring Ancient Greek colonization data using OpenRouter LLMs.
 """
 
-import os
 import json
 from typing import Optional, Dict, List, Any
 import pandas as pd
-import plotly.graph_objects as go
-import plotly.express as px
 from openai import OpenAI
 
 import chainlit as cl
-from chainlit.input_widget import Select, Slider
+from chainlit.input_widget import Select
 
 import config
 from GR03A_DataFrame import create_df_for_viz, txt_to_dataframe
 from agent_tools import (
-    get_colony_statistics,
-    get_country_details,
-    search_colonies,
     compare_countries,
     generate_map_visualization,
     generate_bar_chart,
@@ -159,6 +153,7 @@ def extract_visualization_request(response: str) -> Optional[Dict[str, Any]]:
             if "visualization" in viz_request:
                 return viz_request
         except (json.JSONDecodeError, ValueError):
+            # If JSON parsing fails, return None to indicate no valid visualization request was found
             pass
     return None
 
@@ -228,7 +223,7 @@ Feel free to ask me anything about Ancient Greek colonization!
     await cl.Message(content=welcome_message).send()
     
     # Set up chat settings
-    settings = await cl.ChatSettings(
+    await cl.ChatSettings(
         [
             Select(
                 id="model",

@@ -7,7 +7,6 @@ This script shows how the agent tools work and what kind of analysis
 can be performed on the Greek colonization data.
 """
 
-import pandas as pd
 from GR03A_DataFrame import create_df_for_viz, txt_to_dataframe
 from agent_tools import (
     get_colony_statistics,
@@ -117,9 +116,9 @@ def main():
     
     # Generate but don't display (would require browser)
     try:
-        map_fig = generate_map_visualization(df, {"projection": "natural earth"})
-        bar_fig = generate_bar_chart(df, {"top_n": 10})
-        cat_fig = generate_category_distribution(df, {})
+        generate_map_visualization(df, {"projection": "natural earth"})
+        generate_bar_chart(df, {"top_n": 10})
+        generate_category_distribution(df, {})
         print("\n✅ All visualizations generated successfully!")
         print("   (In the chat app, these would be displayed inline)")
     except Exception as e:
